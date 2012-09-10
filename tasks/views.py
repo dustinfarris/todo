@@ -1,14 +1,20 @@
 import json
+import logging
+import urlparse
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.csrf import csrf_exempt
 
 from forms import EditTaskForm, NewTaskForm
 from models import Task
 from users.decorators import http_basic_auth
+
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -55,13 +61,20 @@ def _create(request):
 @login_required
 def _update(request, pk):
   task = get_object_or_404(Task, pk=pk, user=request.user)
-  form = EditTaskForm(request.POST, instance=task)
-  if form.is_valid():
-    updated_task = form.save()
-    messages.success(request, "Task edit successful.")
-    return redirect('tasks:index')
-  return edit(request, pk, form)
-  
+  if request.method == 'POST':
+    form = EditTaskForm(request.POST, instance=task)
+    if form.is_valid():
+      updated_task = form.save()
+      messages.success(request, "Task edit successful.")
+      return redirect('tasks:index')
+    return edit(request, pk, form)
+  elif request.method == 'PUT':
+    put_data = urlparse.parse_qs(request.raw_post_data)
+    data = {k:v[0] for k,v in put_data.items()}
+    task.description = data.get('description', task.description)
+    task.priority = int(data.get('priority', task.priority))
+    task.save()
+    return HttpResponse("Success")
 
 @http_basic_auth
 @login_required
@@ -87,9 +100,10 @@ def _destroy(request, pk):
   return redirect('tasks:index')
 
 
+@csrf_exempt
 def do(request, **kwargs):
   """Handle `show`, `create`, `update`, and `destroy` actions."""
-  
+  logger.debug(request.raw_post_data)
   if request.method == 'POST':
     method = request.POST.get('_method', 'POST')
   else:
