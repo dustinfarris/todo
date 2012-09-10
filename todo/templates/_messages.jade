@@ -1,0 +1,4 @@
+if messages
+  ul.messages
+    for message in messages
+      li(class='#{message.tags}') {{ message }}

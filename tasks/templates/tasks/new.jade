@@ -1,0 +1,13 @@
+extends base
+
+block title
+  | New Task
+  
+block content
+  article
+    header
+      h1 New Task
+    
+    form(action!='{% url tasks:create %}', method='post')
+      {{ form.as_p }}
+      button(type='submit') Create Task

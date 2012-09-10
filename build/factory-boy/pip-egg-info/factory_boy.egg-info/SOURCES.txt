@@ -1,0 +1,10 @@
+README
+factory/__init__.py
+factory/base.py
+factory/containers.py
+factory/declarations.py
+factory/utils.py
+pip-egg-info/factory_boy.egg-info/PKG-INFO
+pip-egg-info/factory_boy.egg-info/SOURCES.txt
+pip-egg-info/factory_boy.egg-info/dependency_links.txt
+pip-egg-info/factory_boy.egg-info/top_level.txt

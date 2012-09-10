@@ -1,0 +1,16 @@
+extends base
+
+block title
+  | Task {{ task.id }}
+  
+block content
+  article
+    header
+      h1 Task {{ task.id }}
+    
+    p {{ task.description }}
+    p {{ task.get_priority_display }} priority
+    
+    p 
+      a(href!='{% url tasks:edit task.id %}') Edit
+      a(href!='{% url tasks:destroy task.id %}' data-method='delete') Delete

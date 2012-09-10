@@ -1,0 +1,21 @@
+include _messages
+
+h1 Task Manager
+
+nav
+  ul
+    li 
+      a(href!='{% url home %}') Home
+    li
+      a(href!='{% url tasks:index %}') Tasks
+    if request.user.is_authenticated
+      li
+        a(href!='{% url users:edit request.user.username %}') Edit Profile
+      li
+        a(href!='{% url logout %}') Logout
+    else
+      li
+        a(href!='{% url login %}') Login
+      li
+        a(href!='{% url users:new %}') Signup
+        

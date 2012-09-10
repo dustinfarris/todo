@@ -25,6 +25,7 @@ for application in []:
   
 # Disable Raven logging (make test running less noisy)
 del(LOGGING['loggers']['raven'])
+del(LOGGING['loggers']['sentry.errors'])
 
 INTERNAL_IPS += (
   '127.0.0.1',

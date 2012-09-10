@@ -73,11 +73,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
   'django.middleware.common.CommonMiddleware',
   'django.contrib.sessions.middleware.SessionMiddleware',
-  'django.middleware.csrf.CsrfViewMiddleware',
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
-  'raven.contrib.django.middleware.Sentry404CatchMiddleware',
+  'todo.middleware.DisableCSRF',
 )
 
 ROOT_URLCONF = 'todo.urls'
@@ -95,7 +94,9 @@ INSTALLED_APPS = (
   'django.contrib.admindocs',
   'compressor',
   'easy_thumbnails',
-  'raven.contrib.django',
+  #'raven.contrib.django',
+  'tasks',
+  'users',
   'south',
 )
 
@@ -110,6 +111,15 @@ CACHES = {
 }
 CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+
+from django.core.urlresolvers import reverse_lazy
+ABSOLUTE_URL_OVERRIDES = {
+  'auth.user': lambda u: reverse_lazy('users:show', kwargs={'username': u.username}),
+}
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/'
 
 # Google Analytics UA, e.g. UA-XXXXXXX
 #GOOGLE_UA = ''
@@ -167,5 +177,3 @@ LOGGING = {
     },
   },
 }
-
-RAVEN_CONFIG = {}

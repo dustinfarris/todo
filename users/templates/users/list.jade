@@ -1,0 +1,14 @@
+extends base
+
+block title
+  | Users
+
+block content
+  article
+    header
+      h1 Users
+    
+    ul
+      for user in user_list
+        li
+          a(href='#{user.get_absolute_url()}') {{ user.username }}

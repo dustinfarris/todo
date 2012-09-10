@@ -1,0 +1,14 @@
+extends base
+
+block title
+  | {{ user.username }}
+  
+block content
+  article
+    header
+      h1 {{ user.username }}
+    
+    p {{ user.first_name }} {{ user.last_name }}
+    p {{ user.email }}
+    p
+      a(href!='{% url users:edit user.username %}') Edit user

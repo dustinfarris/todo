@@ -1,0 +1,13 @@
+extends base
+
+block title
+  | Edit Task
+  
+block content
+  article
+    header
+      h1 Edit Task
+    
+    form(action!='{% url tasks:update task.pk %}', method='post')
+      {{ form.as_p }}
+      button(type='submit') Update

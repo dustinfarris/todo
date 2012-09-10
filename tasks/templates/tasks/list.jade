@@ -1,0 +1,21 @@
+extends base
+
+block title
+  | My Tasks
+  
+block content
+  article
+    header
+      h1 My Tasks
+    
+    p
+      a(href!='{% url tasks:new %}') New Task
+      
+    ul
+      for task in task_list
+        li 
+          p {{ task.get_priority_display }} -- {{ task.description }}
+          p
+            a(href!='{% url tasks:show task.pk %}') Show
+            a(href!='{% url tasks:edit task.pk %}') Edit
+            a(href!='{% url tasks:destroy task.pk %}', data-method='delete') Delete
