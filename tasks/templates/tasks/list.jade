@@ -4,18 +4,20 @@ block title
   | My Tasks
   
 block content
+  - csrf_token
   article
     header
       h1 My Tasks
     
-    p
+    p.new
       a(href!='{% url tasks:new %}') New Task
       
-    ul
+    ul.tasks
       for task in task_list
         li 
-          p {{ task.get_priority_display }} -- {{ task.description }}
           p
-            a(href!='{% url tasks:show task.pk %}') Show
+            span.priority {{ task.get_priority_display }}
+            span.description {{ task.description }}
+          p.actions
             a(href!='{% url tasks:edit task.pk %}') Edit
-            a(href!='{% url tasks:destroy task.pk %}', data-method='delete') Delete
+            a(href!='{% url tasks:destroy task.pk %}', data-method='delete', data-confirm='Are you sure?') Delete

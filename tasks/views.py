@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from forms import EditTaskForm, NewTaskForm
 from models import Task
+from users.decorators import http_basic_auth
 
 
 @login_required
@@ -17,7 +18,7 @@ def index(request, as_json=False):
     tasks = []
     for task in queryset.all():
       tasks.append({
-                k:str(v) for k,v in user.__dict__.items() if k is not '_state'})
+                k:str(v) for k,v in task.__dict__.items() if k is not '_state'})
     content = json.dumps(tasks)
     return HttpResponse(content, content_type='application/json')
   return render(request, 'tasks/list.jade', {'task_list': queryset})
@@ -37,6 +38,8 @@ def edit(request, pk, form=None):
   return render(request, 'tasks/edit.jade', {'form': form, 'task': task})
   
   
+@http_basic_auth
+@login_required
 def _create(request):
   form = NewTaskForm(request.POST)
   if form.is_valid():
@@ -44,10 +47,11 @@ def _create(request):
     new_task.user = request.user
     new_task.save()
     messages.success(request, "New task created!")
-    return redirect(new_task)
+    return redirect('tasks:index')
   return new(request, form)
   
 
+@http_basic_auth
 @login_required
 def _update(request, pk):
   task = get_object_or_404(Task, pk=pk, user=request.user)
@@ -55,10 +59,11 @@ def _update(request, pk):
   if form.is_valid():
     updated_task = form.save()
     messages.success(request, "Task edit successful.")
-    return redirect(updated_task)
+    return redirect('tasks:index')
   return edit(request, pk, form)
   
 
+@http_basic_auth
 @login_required
 def _show(request, pk=None, as_json=False):
   if not pk:
@@ -66,11 +71,12 @@ def _show(request, pk=None, as_json=False):
   task = get_object_or_404(Task, pk=pk, user=request.user)
   if as_json:
     content = json.dumps({
-                k:str(v) for k,v in user.__dict__.items() if k is not '_state'})
+                k:str(v) for k,v in task.__dict__.items() if k is not '_state'})
     return HttpResponse(content, content_type='application/json')  
   return render(request, 'tasks/show.jade', {'task': task})
 
 
+@http_basic_auth
 @login_required
 def _destroy(request, pk):
   task = get_object_or_404(Task, pk=pk)
@@ -88,7 +94,6 @@ def do(request, **kwargs):
     method = request.POST.get('_method', 'POST')
   else:
     method = request.method
-
   return {
     'get': _show,
     'post': _create,

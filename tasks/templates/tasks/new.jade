@@ -9,5 +9,6 @@ block content
       h1 New Task
     
     form(action!='{% url tasks:create %}', method='post')
+      - csrf_token
       {{ form.as_p }}
       button(type='submit') Create Task

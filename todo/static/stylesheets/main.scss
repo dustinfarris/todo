@@ -1,6 +1,132 @@
 @import "bootstrap/lib/bootstrap";
 
+/* universal */
+
+html {
+  overflow-y: scroll;
+}
+
 body {
-  width: 1000px;
+  padding-top: 30px;
+  width: 800px;
   margin: 0 auto;
+}
+
+
+/* Typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+
+/* Header */
+
+#logo {
+  float: left;
+  margin: 0;
+  font-size: 1.7em;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+#nav {
+  float:right;
+  ul {
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
+}
+
+
+/* Footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #999;
+  small {
+    float: left;
+  }
+}
+
+
+/* Main */
+
+#main {
+  clear: both;
+  padding-top: 30px;
+}
+
+
+/* Tasks */
+
+.new {
+  float: right;
+}
+.tasks {
+  clear: right;
+  list-style: none;
+  margin: 10px 0 0 0;
+  
+  li {
+    clear: both;
+    padding: 1em 0;
+    border-top: 1px solid #e8e8e8;
+    
+    p {
+      margin: -.75em 0 0;
+      float: left;
+    }
+    
+    .priority {
+      float: left;
+      width: 60px;
+      text-transform: uppercase;
+      font-size: .7em;
+      font-weight: bold;
+      color: #999;
+    }
+    
+    .description {
+      float: left;
+      padding-left: 15px;
+    }
+    
+    .actions {
+      float: right;
+      a {
+        margin-left: 10px;
+      }
+    }
+    
+    &:hover {
+      background-color: #ffe;
+    }
+  }
+}
+
+
+/* Forms */
+
+.errorlist {
+  color: #f00;
+  list-style: none;
+  margin: 0;
 }

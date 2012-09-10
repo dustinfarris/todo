@@ -9,5 +9,6 @@ block content
       h1 Edit Task
     
     form(action!='{% url tasks:update task.pk %}', method='post')
+      - csrf_token
       {{ form.as_p }}
       button(type='submit') Update

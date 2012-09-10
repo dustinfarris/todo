@@ -9,5 +9,6 @@ block content
       h1 New User
     
     form(action!='{% url users:create %}', method='post')
+      - csrf_token
       {{ form.as_p }}
       button(type='submit') Submit

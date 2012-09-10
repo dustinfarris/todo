@@ -9,5 +9,6 @@ block content
       h1 Login
     
     form(action!='{% url login %}' method='post')
+      - csrf_token
       {{ form.as_p }}
       button(type='submit') Login

@@ -4,7 +4,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.simple import direct_to_template
 
 
@@ -20,8 +19,8 @@ urlpatterns = patterns('',
     {'template': 'home.jade'},
     name='home'
   ),
-  url(r'^login/$', csrf_exempt(login), {'template_name': 'login.jade'}, name='login'),
-  url(r'^logout/$', csrf_exempt(logout), {'template_name': 'logout.jade'}, name='logout'),
+  url(r'^login/$', login, {'template_name': 'login.jade'}, name='login'),
+  url(r'^logout/$', logout, {'template_name': 'logout.jade'}, name='logout'),
   url(r'^task', include('tasks.urls', namespace='tasks')),
   url(r'^user', include('users.urls', namespace='users')),
   

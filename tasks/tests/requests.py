@@ -39,6 +39,7 @@ class TaskPages(TestCase):
     response = self.client.post(reverse('tasks:create'), data)
     
     self.assertEqual(Task.objects.count(), total_tasks + 1)
+    self.assertRedirects(response, reverse('tasks:index'))
   
   def test_delete(self):
     total_tasks = Task.objects.count()
@@ -58,4 +59,4 @@ class TaskPages(TestCase):
     task = Task.objects.get(id=task.id)
     
     self.assertEqual(task.description, 'BIG CHANGE')
-    self.assertRedirects(response, reverse('tasks:show', kwargs={'pk': str(task.pk)}))
+    self.assertRedirects(response, reverse('tasks:index'))

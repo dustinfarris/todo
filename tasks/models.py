@@ -17,7 +17,7 @@ class Task(models.Model):
   priority = models.SmallIntegerField(choices=PRIORITY_OPTIONS)
   
   class Meta:
-    ordering = ('priority',)
+    ordering = ('-priority',)
   
   @models.permalink
   def get_absolute_url(self):

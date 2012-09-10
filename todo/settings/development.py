@@ -14,7 +14,7 @@ if 'test' in sys.argv:
   PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
 
 # Turn on debug-level logging for applications
-for application in []:
+for application in ['tasks', 'users']:
   LOGGING['loggers'].update({
     application: {
       'level': 'DEBUG',
@@ -25,7 +25,6 @@ for application in []:
   
 # Disable Raven logging (make test running less noisy)
 del(LOGGING['loggers']['raven'])
-del(LOGGING['loggers']['sentry.errors'])
 
 INTERNAL_IPS += (
   '127.0.0.1',
@@ -39,8 +38,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # This effectively disables any server side caching in development
 CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
 
-INSTALLED_APPS += ('debug_toolbar',)
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#INSTALLED_APPS += ('debug_toolbar',)
+#MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 DEBUG_TOOLBAR_PANELS = (
   'debug_toolbar.panels.version.VersionDebugPanel',
