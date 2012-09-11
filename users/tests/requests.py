@@ -26,7 +26,7 @@ class UserPages(TestCase):
   
   def test_edit_page(self):
     self.assertTrue(self.client.login(username=self.user.username, password='asdf'))
-    response = self.client.get(reverse('users:edit', kwargs={'username': self.user.username}), follow=True)
+    response = self.client.get(reverse('users:edit', kwargs={'pk': self.user.pk}), follow=True)
 
     self.assertContains(response, '<h1>Edit %s</h1>' % self.user.username, html=True)
   
@@ -35,7 +35,7 @@ class UserPages(TestCase):
     response = self.client.get(reverse('users:index'))
     
     self.assertContains(response, self.user.username)
-    self.assertContains(response, reverse('users:show', kwargs={'username': self.user.username}))
+    self.assertContains(response, reverse('users:show', kwargs={'pk': self.user.pk}))
   
   def test_create_a_user(self):
     total_users = User.objects.count()
@@ -52,7 +52,7 @@ class UserPages(TestCase):
     self.assertEqual(User.objects.count(), total_users + 1)
 
   def test_detail_if_correct_user(self):
-    response = self.client.get(reverse('users:show', kwargs={'username': self.user.username}))
+    response = self.client.get(reverse('users:show', kwargs={'pk': self.user.pk}))
     
     self.assertContains(response, self.user.first_name)
   
@@ -64,9 +64,9 @@ class UserPages(TestCase):
       '_method': 'put',
     }
     self.client.login(username=self.user.username, password='asdf')
-    response = self.client.post(reverse('users:update', kwargs={'username': self.user.username}), data)
+    response = self.client.post(reverse('users:update', kwargs={'pk': self.user.pk}), data)
     
-    self.assertRedirects(response, reverse('users:show', kwargs={'username': self.user.username}))
+    self.assertRedirects(response, reverse('users:show', kwargs={'pk': self.user.pk}))
     self.assertEqual(self.user.first_name, 'Attempted change')
     
   def test_delete_if_correct_user(self):
@@ -75,7 +75,7 @@ class UserPages(TestCase):
     new_user.save()
     total_users = User.objects.count()
     self.client.login(username=new_user.username, password='asdf')
-    response = self.client.post(reverse('users:destroy', kwargs={'username': new_user.username}), {'_method': 'delete'})
+    response = self.client.post(reverse('users:destroy', kwargs={'pk': new_user.pk}), {'_method': 'delete'})
     
     self.assertRedirects(response, reverse('home'))
     self.assertEqual(User.objects.count(), total_users - 1)
@@ -96,15 +96,15 @@ class UserPages(TestCase):
     wrong_user.set_password('asdf')
     wrong_user.save()
     self.client.login(username=wrong_user.username, password='asdf')
-    detail_response = self.client.get(reverse('users:show', kwargs={'username': self.user.username}))
+    detail_response = self.client.get(reverse('users:show', kwargs={'pk': self.user.pk}))
     data = {
       'first_name': 'Attempted change',
       'last_name': ':):)',
       'email': 'new@email.org',
       '_method': 'put',
     }
-    update_response = self.client.post(reverse('users:update', kwargs={'username': self.user.username}), data)
-    delete_response = self.client.post(reverse('users:destroy', kwargs={'username': self.user.username}), {'_method': 'delete'})
+    update_response = self.client.post(reverse('users:update', kwargs={'pk': self.user.pk}), data)
+    delete_response = self.client.post(reverse('users:destroy', kwargs={'pk': self.user.pk}), {'_method': 'delete'})
     
     self.assertEqual(update_response.status_code, 403)
     self.assertEqual(delete_response.status_code, 403)

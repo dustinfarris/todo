@@ -10,7 +10,7 @@ nav#nav
       a(href!='{% url tasks:index %}') Tasks
     if request.user.is_authenticated
       li
-        a(href!='{% url users:edit request.user.username %}') Edit Profile
+        a(href!='{% url users:edit request.user.pk %}') Edit Profile
       li
         a(href!='{% url logout %}') Logout
     else

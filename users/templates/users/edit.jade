@@ -8,7 +8,7 @@ block content
     header
       h1 Edit {{ user.username }}
     
-    form(action!='{% url users:update user.username %}', method='post')
+    form(action!='{% url users:update user.pk %}', method='post')
       - csrf_token
       {{ form.as_p }}
       button(type='submit') Submit

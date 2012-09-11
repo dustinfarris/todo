@@ -9,5 +9,5 @@ class NewUserForm(auth_forms.UserCreationForm):
 class EditUserForm(auth_forms.UserChangeForm):
   _method = forms.CharField(widget=forms.HiddenInput(), initial='put')
   
-  class Meta:
-    fields = ('username', 'first_name', 'last_name', 'email', '_method',)
+  # class Meta:
+  #   fields = ('username', 'first_name', 'last_name', 'email', '_method',)

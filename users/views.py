@@ -30,8 +30,8 @@ def new(request, form=None):
 
 
 @login_required
-def edit(request, username, form=None):
-  user = get_object_or_404(User, username=username)
+def edit(request, pk, form=None):
+  user = get_object_or_404(User, pk=pk)
   if user != request.user and not request.user.is_superuser:
     return HttpResponseForbidden()
   form = form or EditUserForm(instance=user)
@@ -48,8 +48,8 @@ def _create(request):
   
 
 @login_required
-def _update(request, username):
-  user = get_object_or_404(User, username=username)
+def _update(request, pk):
+  user = get_object_or_404(User, pk=pk)
   if user != request.user and not request.user.is_superuser:
     return HttpResponseForbidden()
   form = EditUserForm(request.POST)
@@ -57,14 +57,14 @@ def _update(request, username):
     updated_user = form.save()
     messages.success(request, "User edit successful.")
     return redirect(updated_user)
-  return edit(request, username, form)
+  return edit(request, pk, form)
   
 
-def _show(request, username=None, as_json=False, queryset=None):
+def _show(request, pk=None, as_json=False, queryset=None):
   queryset = queryset or User.objects.all()
-  if not username:
+  if not pk:
     return index(request, queryset, as_json)
-  user = get_object_or_404(queryset, username=username)
+  user = get_object_or_404(queryset, pk=pk)
   if as_json:
     content = json.dumps({
                 k:str(v) for k,v in user.__dict__.items() if k is not '_state'})
@@ -73,8 +73,8 @@ def _show(request, username=None, as_json=False, queryset=None):
 
 
 @login_required
-def _destroy(request, username):
-  user = get_object_or_404(User, username=username)
+def _destroy(request, pk):
+  user = get_object_or_404(User, pk=pk)
   if user != request.user and not request.user.is_superuser:
     return HttpResponseForbidden()
   user.delete()

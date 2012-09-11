@@ -11,4 +11,4 @@ block content
     p {{ user.first_name }} {{ user.last_name }}
     p {{ user.email }}
     p
-      a(href!='{% url users:edit user.username %}') Edit user
+      a(href!='{% url users:edit user.pk %}') Edit user

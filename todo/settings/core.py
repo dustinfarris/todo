@@ -119,7 +119,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
 
 from django.core.urlresolvers import reverse_lazy
 ABSOLUTE_URL_OVERRIDES = {
-  'auth.user': lambda u: reverse_lazy('users:show', kwargs={'username': u.username}),
+  'auth.user': lambda u: reverse_lazy('users:show', kwargs={'pk': u.pk}),
 }
 
 LOGIN_URL = '/login/'
